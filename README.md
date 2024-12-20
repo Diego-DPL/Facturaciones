@@ -1,50 +1,67 @@
-# React + TypeScript + Vite
+# Facturas y Presupuestos
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este proyecto es una aplicación web para la gestión de facturas y presupuestos. Está construido con React y utiliza Tailwind CSS para el diseño.
 
-Currently, two official plugins are available:
+## Características
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Iniciar sesión
+- Generar facturas
+- Ver facturas
+- Navegación entre diferentes secciones
 
-## Expanding the ESLint configuration
+## Tecnologías utilizadas
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- React
+- React Router
+- Tailwind CSS
 
-- Configure the top-level `parserOptions` property like this:
+## Instalación
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+Sigue estos pasos para configurar el proyecto en tu máquina local:
+
+1. Clona el repositorio:
+
+   ```sh
+   git clone <URL_DEL_REPOSITORIO>
+2. Navega al directorio del proyecto:
+
+   ```sh
+   cd Facturas/Presupuestos
+
+3. Instala las dependencias:
+
+```sh
+   npm install
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+4. Inicia el servidor de desarrollo:
+```sh
+   npm run dev
 ```
+Uso
+Una vez que el servidor de desarrollo esté en funcionamiento, abre tu navegador y navega a http://localhost:3000 para ver la aplicación.
+
+Estructura del proyecto
+src/
+components/: Componentes reutilizables de la aplicación
+login.tsx: Componente de inicio de sesión
+layout.tsx: Componente de diseño
+generate-invoice.tsx: Componente para generar facturas
+view-invoice.tsx: Componente para ver facturas
+dashboard/: Páginas del dashboard
+page.tsx: Página principal del dashboard
+view-invoices/: Página para ver facturas
+page.tsx: Página para ver facturas
+App.tsx: Componente principal de la aplicación
+main.tsx: Punto de entrada de la aplicación
+index.css: Archivo CSS principal
+Contribuir
+Si deseas contribuir a este proyecto, sigue estos pasos:
+
+Haz un fork del repositorio.
+Crea una nueva rama (git checkout -b feature/nueva-caracteristica).
+Realiza tus cambios y haz commit (git commit -am 'Añade nueva característica').
+Sube tus cambios a la rama (git push origin feature/nueva-caracteristica).
+Abre un Pull Request.
+Licencia
+Este proyecto está bajo la licencia MIT. Consulta el archivo LICENSE para más detalles.
