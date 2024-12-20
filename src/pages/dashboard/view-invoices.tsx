@@ -10,7 +10,7 @@ interface Invoice {
 }
 
 const ViewInvoices: React.FC = () => {
-  const [invoices, setInvoices] = useState<Invoice[]>([
+  const [invoices] = useState<Invoice[]>([
     { id: 1, number: 'INV-001', date: '2023-05-01', client: 'Cliente A', total: 1000 },
     { id: 2, number: 'INV-002', date: '2023-05-15', client: 'Cliente B', total: 1500 },
     { id: 3, number: 'INV-003', date: '2023-06-01', client: 'Cliente C', total: 2000 },
