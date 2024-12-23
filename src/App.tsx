@@ -3,8 +3,8 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './components/login';
 import Dashboard from './dashboard/page';
-import GenerateInvoice from './dashboard/generate-invoice/page';
-import ViewInvoices from './dashboard/view-invoices/page';
+import GenerateInvoice from './dashboard/generate-invoice/generateInvoice';
+import ViewInvoices from './dashboard/view-invoices/viewInvoice';
 
 const App: React.FC = () => {
   return (
