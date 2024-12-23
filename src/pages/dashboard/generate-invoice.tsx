@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import Layout from '../../components/layout';
 import jsPDF from 'jspdf';
-// import html2canvas from 'html2canvas';
+import html2canvas from 'html2canvas';
 
 const GenerateInvoice: React.FC = () => {
   const [client, setClient] = useState({ name: '', address: '', nif: '' });
   const [items, setItems] = useState([{ name: '', quantity: 0, price: 0 }]);
+  const [buttonText, setButtonText] = useState('Generar PDF');
 
   const handleClientChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setClient({ ...client, [e.target.name]: e.target.value });
@@ -22,48 +23,44 @@ const GenerateInvoice: React.FC = () => {
   };
 
   const generatePDF = async () => {
-    // const invoiceElement = document.getElementById('invoice-template');
-    console.log('generar pdf');
-    const pdf = new jsPDF();
-    pdf.text('Hola, esta es una prueba de PDF', 10, 10);
-    pdf.save('prueba.pdf');
+    const invoiceElement = document.getElementById('invoice-template');
+    if (!invoiceElement) {
+      alert('No se encontró el elemento de la factura');
+      return;
+    }
 
-    // if (!invoiceElement) {
-    //   alert('No se encontró el elemento de la factura');
-    //   return;
-    // }
+    setButtonText('Generando...');
 
-    // try {
-    //   // Renderizar el contenido como imagen
-    //   const canvas = await html2canvas(invoiceElement, { scale: 2 });
-    //   const imgData = canvas.toDataURL('image/png');
+    try {
+      const canvas = await html2canvas(invoiceElement, { scale: 2 });
+      const imgData = canvas.toDataURL('image/png');
 
-    //   // Crear PDF
-    //   const pdf = new jsPDF({
-    //     orientation: 'portrait',
-    //     unit: 'px',
-    //     format: 'a4',
-    //   });
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'px',
+        format: 'a4',
+      });
 
-    //   // Dimensiones del PDF
-    //   const pdfWidth = pdf.internal.pageSize.getWidth();
-    //   const pdfHeight = pdf.internal.pageSize.getHeight();
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
 
-    //   pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-    //   pdf.save('factura.pdf');
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save('factura.pdf');
 
-    //   alert('Factura generada con éxito');
-    // } catch (error) {
-    //   console.error('Error al generar el PDF:', error);
-    //   alert('Hubo un error al generar la factura');
-    // }
+      setButtonText('Generar PDF');
+      alert('Factura generada con éxito');
+    } catch (error) {
+      console.error('Error al generar el PDF:', error);
+      setButtonText('Generar PDF');
+      alert('Hubo un error al generar la factura');
+    }
   };
 
   return (
     <Layout>
       <h1 className="text-3xl font-semibold text-gray-800 mb-6">Generar Factura</h1>
       <form className="space-y-6">
-        {/* Formulario */}
+        {/* Datos del Cliente */}
         <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
           <h2 className="text-xl font-semibold mb-4">Datos del Cliente</h2>
           <div className="grid grid-cols-1 gap-6">
@@ -94,6 +91,7 @@ const GenerateInvoice: React.FC = () => {
           </div>
         </div>
 
+        {/* Productos/Servicios */}
         <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
           <h2 className="text-xl font-semibold mb-4">Productos/Servicios</h2>
           {items.map((item, index) => (
@@ -129,21 +127,26 @@ const GenerateInvoice: React.FC = () => {
             onClick={addItem}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           >
-            Añadir Produsdsacto
+            Añadir Producto
           </button>
         </div>
 
+        {/* Botón para generar PDF */}
         <button
           type="button"
           onClick={generatePDF}
           className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         >
-          Generaaar PDF
+          {buttonText}
         </button>
       </form>
 
-      {/* Plantilla de factura */}
-      <div id="invoice-template" className="bg-white p-10 rounded-md shadow-lg text-gray-800">
+      {/* Plantilla de Factura */}
+      <div
+        id="invoice-template"
+        className="bg-white p-10 rounded-md shadow-lg text-gray-800"
+        style={{ width: '210mm', height: '297mm', padding: '10mm' }}
+      >
         <h1 className="text-2xl font-bold mb-4">Factura</h1>
         <div className="mb-6">
           <p><strong>Cliente:</strong> {client.name}</p>
