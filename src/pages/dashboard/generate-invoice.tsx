@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '../../components/layout';
 import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+// import html2canvas from 'html2canvas';
 
 const GenerateInvoice: React.FC = () => {
   const [client, setClient] = useState({ name: '', address: '', nif: '' });
