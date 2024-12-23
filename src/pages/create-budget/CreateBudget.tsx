@@ -5,8 +5,9 @@ import html2canvas from 'html2canvas';
 import BudgetTemplate from '../../components/BudgetTemplate';
 
 const CreateBudget: React.FC = () => {
-  const [client, setClient] = useState({ name: '', concept: '' });
+  const [client, setClient] = useState({ name: '', address: '', date: '' });
   const [items, setItems] = useState([{ description: '', quantity: 0, price: 0 }]);
+  const [notes, setNotes] = useState('');
   const [showModal, setShowModal] = useState(false);
 
   const handleClientChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,16 +74,24 @@ const CreateBudget: React.FC = () => {
             />
             <input
               type="text"
-              name="concept"
-              placeholder="Concepto del presupuesto"
-              value={client.concept}
+              name="address"
+              placeholder="Dirección"
+              value={client.address}
+              onChange={handleClientChange}
+              className="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+            <input
+              type="date"
+              name="date"
+              placeholder="Fecha"
+              value={client.date}
               onChange={handleClientChange}
               className="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
         </div>
 
-        {/* Productos */}
+        {/* Productos/Servicios */}
         <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
           <h2 className="text-xl font-semibold mb-4">Productos/Servicios</h2>
           {items.map((item, index) => (
@@ -122,6 +131,18 @@ const CreateBudget: React.FC = () => {
           </button>
         </div>
 
+        {/* Notas */}
+        <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+          <h2 className="text-xl font-semibold mb-4">Notas</h2>
+          <textarea
+            placeholder="Notas adicionales"
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            className="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            rows={4}
+          />
+        </div>
+
         <button
           type="button"
           onClick={() => setShowModal(true)} // Abre el modal
@@ -136,7 +157,7 @@ const CreateBudget: React.FC = () => {
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="relative bg-white rounded shadow-lg w-full max-w-4xl h-4/5 flex flex-col">
             <div className="overflow-auto p-6 flex-1">
-              <BudgetTemplate client={client} items={items} />
+              <BudgetTemplate client={client} items={items} notes={notes} />
             </div>
             <div className="p-4 flex justify-end space-x-4 bg-gray-100 border-t border-gray-300">
               <button
