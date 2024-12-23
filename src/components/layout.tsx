@@ -1,6 +1,6 @@
+// src/components/Layout.tsx
 import React, { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-
 
 interface LayoutProps {
   children: ReactNode;
@@ -20,6 +20,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <Link to="/dashboard/view-invoices" className="block py-2 px-4 text-gray-700 hover:bg-blue-500 hover:text-white">
             Ver Facturas
           </Link>
+          <Link to="/dashboard/create-budget" className="block py-2 px-4 text-gray-700 hover:bg-blue-500 hover:text-white">
+            Crear Presupuesto
+          </Link> {/* Enlace nuevo */}
         </nav>
       </aside>
       <main className="flex-1 p-8 overflow-y-auto">{children}</main>
@@ -28,4 +31,3 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 };
 
 export default Layout;
-

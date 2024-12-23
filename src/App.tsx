@@ -2,9 +2,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './components/login';
-import Dashboard from './dashboard/page';
-import GenerateInvoice from './dashboard/generate-invoice/generateInvoice';
-import ViewInvoices from './dashboard/view-invoices/viewInvoice';
+import Dashboard from './pages/page';
+import GenerateInvoice from './pages/generate-invoice/generateInvoice';
+import ViewInvoices from './pages/view-invoices/viewInvoice';
+import CreateBudget from './pages/create-budget/CreateBudget'; // Nueva ruta para presupuestos
 
 const App: React.FC = () => {
   return (
@@ -15,7 +16,7 @@ const App: React.FC = () => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/dashboard/generate-invoice" element={<GenerateInvoice />} />
           <Route path="/dashboard/view-invoices" element={<ViewInvoices />} />
-       
+          <Route path="/dashboard/create-budget" element={<CreateBudget />} /> {/* Nueva ruta */}
         </Routes>
       </Router>
     </div>

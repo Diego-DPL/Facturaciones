@@ -2,19 +2,24 @@ import React, { useState } from 'react';
 import Layout from '../../components/layout';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import InvoiceTemplate from '../../components/InvoiceTemplate';
 
 const GenerateInvoice: React.FC = () => {
   const [client, setClient] = useState({ name: '', address: '', nif: '' });
   const [items, setItems] = useState([{ name: '', quantity: 0, price: 0 }]);
-  const [buttonText, setButtonText] = useState('Generar PDF');
+  const [showModal, setShowModal] = useState(false);
 
   const handleClientChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setClient({ ...client, [e.target.name]: e.target.value });
   };
 
   const handleItemChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
     const newItems = [...items];
-    newItems[index] = { ...newItems[index], [e.target.name]: e.target.value };
+    newItems[index] = {
+      ...newItems[index],
+      [name]: name === 'quantity' || name === 'price' ? parseFloat(value) || 0 : value,
+    };
     setItems(newItems);
   };
 
@@ -28,8 +33,6 @@ const GenerateInvoice: React.FC = () => {
       alert('No se encontró el elemento de la factura');
       return;
     }
-
-    setButtonText('Generando...');
 
     try {
       const canvas = await html2canvas(invoiceElement, { scale: 2 });
@@ -46,12 +49,8 @@ const GenerateInvoice: React.FC = () => {
 
       pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
       pdf.save('factura.pdf');
-
-      setButtonText('Generar PDF');
-      alert('Factura generada con éxito');
     } catch (error) {
       console.error('Error al generar el PDF:', error);
-      setButtonText('Generar PDF');
       alert('Hubo un error al generar la factura');
     }
   };
@@ -131,52 +130,39 @@ const GenerateInvoice: React.FC = () => {
           </button>
         </div>
 
-        {/* Botón para generar PDF */}
         <button
           type="button"
-          onClick={generatePDF}
+          onClick={() => setShowModal(true)} // Abre el modal
           className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         >
-          {buttonText}
+          Previsualizar Factura
         </button>
       </form>
 
-      {/* Plantilla de Factura */}
-      <div
-        id="invoice-template"
-        className="bg-white p-10 rounded-md shadow-lg text-gray-800"
-        style={{ width: '210mm', height: '297mm', padding: '10mm' }}
-      >
-        <h1 className="text-2xl font-bold mb-4">Factura</h1>
-        <div className="mb-6">
-          <p><strong>Cliente:</strong> {client.name}</p>
-          <p><strong>Dirección:</strong> {client.address}</p>
-          <p><strong>NIF/CIF:</strong> {client.nif}</p>
+      {/* Modal */}
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="relative bg-white rounded shadow-lg w-full max-w-4xl h-4/5 flex flex-col">
+            <div className="overflow-auto p-6 flex-1">
+              <InvoiceTemplate client={client} items={items} />
+            </div>
+            <div className="p-4 flex justify-end space-x-4 bg-gray-100 border-t border-gray-300">
+              <button
+                onClick={() => setShowModal(false)} // Cierra el modal
+                className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+              >
+                Editar
+              </button>
+              <button
+                onClick={generatePDF} // Genera el PDF
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              >
+                Imprimir
+              </button>
+            </div>
+          </div>
         </div>
-        <table className="w-full text-left border-collapse border border-gray-300">
-          <thead>
-            <tr>
-              <th className="border border-gray-300 px-4 py-2">Producto</th>
-              <th className="border border-gray-300 px-4 py-2">Cantidad</th>
-              <th className="border border-gray-300 px-4 py-2">Precio Unitario</th>
-              <th className="border border-gray-300 px-4 py-2">Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((item, index) => (
-              <tr key={index}>
-                <td className="border border-gray-300 px-4 py-2">{item.name}</td>
-                <td className="border border-gray-300 px-4 py-2">{item.quantity}</td>
-                <td className="border border-gray-300 px-4 py-2">${item.price.toFixed(2)}</td>
-                <td className="border border-gray-300 px-4 py-2">${(item.quantity * item.price).toFixed(2)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <div className="mt-4">
-          <p><strong>Total:</strong> ${items.reduce((sum, item) => sum + item.quantity * item.price, 0).toFixed(2)}</p>
-        </div>
-      </div>
+      )}
     </Layout>
   );
 };
